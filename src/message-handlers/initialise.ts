@@ -34,42 +34,44 @@ export default async function initialise(message: InitialiseMessage, websocket: 
 
     // By default use a random subdomain unless the subscription is valid and a subdomain is passed
     if (typeof message.subdomain === 'string') {
-        const reservedDomain: ReservedDomain = {
-            apiKey: message.apiKey,
-            subdomain: message.subdomain
-        };
+        // const reservedDomain: ReservedDomain = {
+        //     apiKey: message.apiKey,
+        //     subdomain: message.subdomain
+        // };
 
-        // Reserve and set the requested domain, or send back a message in case of failure
-        const result = await reserveDomain(reservedDomain);
-        switch (result) {
-            case TOO_MANY_DOMAINS:
-                const tooManyDomains: TooManyDomains = {
-                    type: "tooManyDomains",
-                    subdomain
-                }
+        // // Reserve and set the requested domain, or send back a message in case of failure
+        // const result = await reserveDomain(reservedDomain);
+        // switch (result) {
+        //     case TOO_MANY_DOMAINS:
+        //         const tooManyDomains: TooManyDomains = {
+        //             type: "tooManyDomains",
+        //             subdomain
+        //         }
 
-                websocket.sendMessage(tooManyDomains);
-                break;
-            case DOMAIN_ALREADY_RESERVED:
-                const domainAlreadyReservedMessage: DomainAlreadyReserved = {
-                    type: "domainAlreadyReserved",
-                    subdomain: message.subdomain,
-                }
+        //         websocket.sendMessage(tooManyDomains);
+        //         break;
+        //     case DOMAIN_ALREADY_RESERVED:
+        //         const domainAlreadyReservedMessage: DomainAlreadyReserved = {
+        //             type: "domainAlreadyReserved",
+        //             subdomain: message.subdomain,
+        //         }
 
-                websocket.sendMessage(domainAlreadyReservedMessage);
-                break;
-            case SUCCESS:
-                subdomain = message.subdomain;
-                break;
-            case ERROR:
-                const domainReservationError: DomainReservationError = {
-                    type: "domainReservationError",
-                    subdomain
-                }
+        //         websocket.sendMessage(domainAlreadyReservedMessage);
+        //         break;
+        //     case SUCCESS:
+        //         subdomain = message.subdomain;
+        //         break;
+        //     case ERROR:
+        //         const domainReservationError: DomainReservationError = {
+        //             type: "domainReservationError",
+        //             subdomain
+        //         }
 
-                websocket.sendMessage(domainReservationError);
-                break;
-        }
+        //         websocket.sendMessage(domainReservationError);
+        //         break;
+        // }
+        
+        subdomain = message.subdomain;
     }
 
     const clientId = message.clientId;
@@ -135,7 +137,7 @@ export default async function initialise(message: InitialiseMessage, websocket: 
 const generateRandomSubdomain = (websocket: HostipWebSocket) : string => {
     const randomString : string = randomstring.generate(RANDOM_SUBDOMAIN_LENGTH);
     let subdomain = randomString.toLowerCase();
-    const ipTransformed = websocket.ipAddress.replace(/\./g, '-');
-    subdomain = subdomain + '-ip-' + ipTransformed;
+    // const ipTransformed = websocket.ipAddress.replace(/\./g, '-');
+    // subdomain = subdomain + '-ip-' + ipTransformed;
     return subdomain;
 }

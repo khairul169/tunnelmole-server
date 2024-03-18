@@ -10,6 +10,7 @@ httpPort = 8000
 websocketPort = 8080
 domain = 'localhost'
 password = 'changeme'
+apiKey = '1234567890'
 
 # A list of banned IPs
 bannedIps = [
